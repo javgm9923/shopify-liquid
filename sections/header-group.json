@@ -11,12 +11,16 @@
   "type": "header",
   "name": "t:general.header",
   "sections": {
-    "header": {
-      "type": "header",
+    "header-main": {
+      "type": "header-main",
+      "settings": {}
+    },
+    "header-promo": {
+      "type": "header-promo",
       "settings": {}
     }
   },
   "order": [
-    "header"
+    "header-promo", "header-main"
   ],
 }

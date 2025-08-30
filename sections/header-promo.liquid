@@ -1,0 +1,38 @@
+{% assign promos = shop.metafields.custom.promociones_activas.value %}
+
+<header
+  class="flex items-center justify-center text-white bg-[var(--color-orange)] font-bold h-10"
+  role="region"
+  aria-label="Promoción"
+  data-promos="{{ promos | json | escape }}"
+>
+  {% if promos and promos.size > 0 %}
+    <p class="promo-text text-sm" aria-live="polite">{{ promos[0] }}</p>
+  {% endif %}
+</header>
+
+{% javascript %}
+  (function () {
+    var container = document.querySelector('[data-promos]');
+    if (!container) return;
+
+    var raw = container.getAttribute('data-promos') || '[]';
+    var promos;
+    try {
+      promos = JSON.parse(raw);
+    } catch (e) {
+      promos = [];
+    }
+
+    if (!Array.isArray(promos) || promos.length <= 1) return;
+
+    var textEl = container.querySelector('.promo-text');
+    if (!textEl) return;
+
+    var i = 0; // promos[0] ya está visible
+    setInterval(function () {
+      i = (i + 1) % promos.length;
+      textEl.textContent = promos[i];
+    }, 3000);
+  })();
+{% endjavascript %}

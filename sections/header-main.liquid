@@ -1,0 +1,26 @@
+<header class="relative flex items-center h-10 px-4">
+  <!-- Store logo -->
+  <a
+    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+    href="{{ routes.root_url }}"
+    aria-label="{{ shop.name }}"
+  >
+    {% if shop.brand.logo %}
+      {{ shop.brand.logo | image_url: width: 30 | image_tag: alt: shop.name }}
+    {% else %}
+      <span>{{ shop.name }}</span>
+    {% endif %}
+  </a>
+
+  <!-- Cart Icon -->
+  <a
+    class="ml-auto"
+    href="{{ routes.cart_url }}"
+    aria-label="Abrir carrito"
+  >
+    {% render 'icon-bag', class: 'size-6 text-[var(--color-orange)] hover:text-[var(--color-orange-dark)]' %}
+    {%- if cart.item_count > 0 -%}
+      <span>{{ cart.item_count }}</span>
+    {%- endif -%}
+  </a>
+</header>

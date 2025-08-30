@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@layer theme {
+  :root, :host {
+    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+
+    /* brand color palette */
+    --color-brown-dark: #753b06;
+    --color-yellow-light: #f7a357;
+    --color-orange: #f57a0c; /* primary */
+    --color-brown-medium: #754d29;
+    --color-orange-dark: #c2610a;
+  }
+}
