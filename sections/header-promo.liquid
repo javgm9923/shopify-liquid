@@ -1,4 +1,4 @@
-{% assign promos = shop.metafields.custom.promociones_activas.value %}
+{% assign promos = section.blocks | map: 'settings' | map: 'text' %}
 
 <header
   class="flex items-center justify-center text-white bg-[var(--color-orange)] font-bold h-10"
@@ -36,3 +36,25 @@
     }, 3000);
   })();
 {% endjavascript %}
+
+{% schema %}
+{
+  "name": "Mensajes promocionales",
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "promo",
+      "name": "Promoción",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto del mensaje",
+          "default": "🚚 Envío gratis en pedidos superiores a $99.000 🚚"
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Mensajes promocionales" }]
+}
+{% endschema %}
