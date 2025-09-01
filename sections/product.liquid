@@ -5,48 +5,23 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/product
 {% endcomment %}
 
-<div class="product-images">
-  {% for image in product.images %}
-    {% render 'image', class: 'product-image', image: image %}
-  {% endfor %}
-</div>
+{% assign angulos_venta = product.metafields.custom.angulos_venta %}
+{% if angulos_venta.value %}
+  <pre>{{ angulos_venta.value | json }}</pre>
+  <p>{{ angulos_venta.value.first.resultado_deseado }}</p>
+{% endif %}
 
-<div class="product-info">
-  <h1>{{ product.title }}</h1>
-  <p>{{ product.price | money }}</p>
-  <p>{{ product.description }}</p>
-</div>
+{% for angulo in angulos_venta.value %}
+  <p>{{ angulo.resultado_de }}</p>
+{% endfor %}
 
-<div class="product-form">
-  {% form 'product', product %}
-    {% assign current_variant = product.selected_or_first_available_variant %}
-
-    <select name="id">
-      {% for variant in product.variants %}
-        <option
-          value="{{ variant.id }}"
-          {% if variant == current_variant %}
-            selected="selected"
-          {% endif %}
-        >
-          {{ variant.title }} - {{ variant.price | money }}
-        </option>
-      {% endfor %}
-    </select>
-
-    <input type="text" name="quantity" min="1" value="1">
-
-    <input type="submit" value="Add to cart">
-    {{ form | payment_button }}
-  {% endform %}
-</div>
-
-{% schema %}
-{
-  "name": "t:general.product",
-  "settings": [],
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  }
-}
-{% endschema %}
+{%- comment -%}
+  Method 2: Loop through all angulos_venta (if there are multiple)
+{%- endcomment -%}
+{% for angulo in angulos_venta.value %}
+  {% if angulo.resultado_deseado.value %}
+    <div class="angulo-resultado">
+      <p>{{ angulo.resultado_deseado.value }}</p>
+    </div>
+  {% endif %}
+{% endfor %}
