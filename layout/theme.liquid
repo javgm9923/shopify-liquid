@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
-    {% # Inlined CSS Variables %}
-    {% render 'css-variables' %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {% # Load and preload the critical CSS %}
+    {%- render 'css-variables' -%}
+
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag: preload: true }}
 
-    {% # Social, title, etc. %}
-    {% render 'meta-tags' %}
-
+    {%- render 'meta-tags' -%}
     {{ content_for_header }}
   </head>
 
@@ -19,5 +19,8 @@
     {{ content_for_layout }}
 
     {% sections 'footer-group' %}
+
+    <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'swiper-init.js' | asset_url }}" defer></script>
   </body>
 </html>

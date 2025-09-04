@@ -4,6 +4,82 @@
 
   https://shopify.dev/docs/storefronts/themes/architecture/templates/product
 {% endcomment %}
+<style>
+  /* === Estilos SOLO para esta sección === */
+  #shopify-section-{{ section.id }} [data-swiper-el] {
+    /* 1 y 3) Color de flechas + tamaño del ícono de flecha */
+    --swiper-navigation-color: var(--color-brown-dark); /* cambia a tu color */
+    --swiper-navigation-size: 20px; /* tamaño del ícono (default ~44px) */
+    /* 2) Color base de bullets (afecta el activo si no lo sobreescribes abajo) */
+    --swiper-pagination-color: var(--color-brown-dark);
+  }
+
+  /* Si quieres que el ACTIVO tenga un color distinto al resto, sobreescribe: */
+  #shopify-section-{{ section.id }} [data-swiper-el] .swiper-pagination-bullet {
+    background: rgba(0,0,0,.25);  /* color bullets inactivos */
+    opacity: 1;                    /* (opcional) todos visibles */
+  }
+  #shopify-section-{{ section.id }} [data-swiper-el] .swiper-pagination-bullet-active {
+    background: var(--color-brown-dark); /* color bullet activo */
+  }
+
+  /* 3) (Opcional) Aumentar área clickeable de las flechas */
+  #shopify-section-{{ section.id }} [data-swiper-el] .swiper-button-prev,
+  #shopify-section-{{ section.id }} [data-swiper-el] .swiper-button-next {
+    width: 44px;   /* target más grande para accesibilidad */
+    height: 44px;
+  }
+</style>
+
+<section class="product-gallery w-full" data-swiper-gallery role="region" aria-label="Galería de imágenes del producto">
+  <div
+    class="swiper w-full overflow-hidden"
+    data-swiper-el
+    aria-roledescription="carousel"
+    aria-label="Carrusel de imágenes"
+  >
+    <div class="swiper-wrapper items-stretch">
+      {%- if product.media and product.media.size > 0 -%}
+        {%- for media in product.media -%}
+          <div class="swiper-slide flex items-center justify-center min-h-[280px]">
+            {%- render 'product-media', media: media -%}
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    <div class="swiper-pagination" aria-label="Paginación de la galería"></div>
+    <div class="swiper-button-prev" aria-label="Anterior"></div>
+    <div class="swiper-button-next" aria-label="Siguiente"></div>
+  </div>
+</section>
+
+<section class="product-information p-4" aria-labelledby="product-title">
+  <header>
+    <h1 id="product-title" class="text-[var(--color-orange-dark)] text-xl font-bold">
+      {{ product.title | escape }}
+    </h1>
+  </header>
+
+  {%- assign rating_value = product.metafields.reviews.rating.value | default: 4.85 -%}
+  {%- assign rating_value_rounded = rating_value | round: 2 -%}
+  {%- assign full_stars = rating_value | floor -%}
+
+  <div class="flex items-center" role="img" aria-label="Calificación {{ rating_value_rounded }} de 5">
+    {%- for i in (1..5) -%}
+      {%- if i <= full_stars -%}
+        {% render 'icon-start', class: 'size-3 text-[var(--color-brown-dark)]' %}
+      {%- else -%}
+        {% render 'icon-start', class: 'size-3 text-gray-400' %}
+      {%- endif -%}
+    {%- endfor -%}
+    <p class="ms-1 text-xs font-medium text-gray-500">{{ rating_value_rounded }} / 5</p>
+  </div>
+
+  <div aria-label="Descripción del producto">
+    {{ product.description }}
+  </div>
+</section>
 
 {% assign angulos_venta = product.metafields.custom.angulos_venta %}
 {% if angulos_venta.value %}
